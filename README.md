@@ -1,2 +1,2 @@
 # cfts
-Merchant Futures Trade System
+Commodity Futures Trade System
