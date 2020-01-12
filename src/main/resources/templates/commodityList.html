@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+
+
+    <table>
+        <legend>
+            <strong>品种列表</strong>
+        </legend>
+        <thead>
+            <tr>
+                <th>代码</th>
+                <th>名称</th>
+                <th>交易所</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="commodity:${commodityList}">
+                <td th:text="${commodity.code}"/>
+                <td th:text="${commodity.name}"/>
+                <td th:text="${commodity.exchangeCode}"/>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
