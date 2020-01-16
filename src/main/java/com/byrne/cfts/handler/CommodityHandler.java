@@ -3,10 +3,13 @@ package com.byrne.cfts.handler;
 import com.byrne.cfts.dao.CommodityRepository;
 import com.byrne.cfts.dao.ExchangeRepository;
 import com.byrne.cfts.domain.Commodity;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
+
+import org.slf4j.Logger;
 
 @Component
 public class CommodityHandler {
@@ -20,9 +23,10 @@ public class CommodityHandler {
     }
 
     public Mono<Commodity> save(Commodity commodity) {
+//        Logger logger = LoggerFactory.getLogger(CommodityHandler.class);
         Mono a = Mono.from(
                 exchangeRepository.findById(commodity.getExchangeCode())
-                    .map(e->commodityRepository.save((commodity)))
+                    .flatMap(e->commodityRepository.save(commodity))
         );
 
         return  a;

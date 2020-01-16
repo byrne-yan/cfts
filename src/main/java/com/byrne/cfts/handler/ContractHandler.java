@@ -21,7 +21,7 @@ public class ContractHandler {
 
     public Mono<Contract> save(Contract contract) {
         Mono a = Mono.from(commodityRepository.findById(contract.getProductCode())
-                .map(cc->contractRepository.save(contract)));
+                .flatMap(cc->contractRepository.save(contract)));
         return  a;
 
     }
