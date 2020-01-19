@@ -1,6 +1,8 @@
 package com.byrne.cfts.controller;
 
 import com.byrne.cfts.domain.Commodity;
+import com.byrne.cfts.domain.Contract;
+import com.byrne.cfts.domain.Exchange;
 import com.byrne.cfts.handler.CommodityHandler;
 import com.byrne.cfts.handler.ContractHandler;
 import com.byrne.cfts.handler.ExchangeHandler;
@@ -26,8 +28,15 @@ public class WebController {
 
     @GetMapping()
     public Mono<String> index(final Model model) {
-        model.addAttribute("name", "泥瓦匠");
-        model.addAttribute("city", "浙江温岭");
+        final Flux<Exchange> exchanges = exchangeHandler.findAllExchange();
+        model.addAttribute("exchanges", exchanges);
+
+        final Flux<Commodity> commodities = commodityHandler.findAllCommodity();
+        model.addAttribute("commodities", commodities);
+
+        final Flux<Contract> contracts = contractHandler.findAllContract();
+        model.addAttribute("contracts", contracts);
+
 
         String path = "index";
         return Mono.create(monoSink -> monoSink.success(path));

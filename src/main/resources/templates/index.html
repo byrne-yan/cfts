@@ -5,7 +5,111 @@
     <title></title>
 </head>
 <body>
-<h1> 你好，欢迎来自<p th:text="${city}"/>的<p th:text="${name}"/>
-</h1>
+
+<div id="contents">
+
+    <!--<table>-->
+        <!--<tr>-->
+        <!--<th>Code</th>-->
+        <!--<th>Name</th>-->
+        <!--</tr>-->
+        <!--<tr data-th-each="exchange : ${exchanges}">-->
+            <!--<td  data-th-text="${exchange.code }">-->
+            <!--</td>-->
+            <!--<td >-->
+                <!--<a th:href="@{${exchange.website} }" data-th-text="${exchange.name }"/>-->
+            <!--</td>-->
+
+        <!--</tr>-->
+    <!--</table>-->
+
+
+    <!--<exchange-list v-bind:ex="[{code:'sdas',name:'asfsdf',website:'http://a.bc.c'}]">-->
+
+    <!--</exchange-list>-->
+
+    <commodity-list v-bind:commodities="commodities" v-bind:exchanges="exchanges">
+
+    </commodity-list>
+
+
+</div>
+
+
+<script th:inline="javascript">
+    var exchanges = /*[[${exchanges}]]*/ [];
+    var commodities = /*[[${commodities}]]*/ [];
+    var contracts = /*[[${contracts}]]*/ [];
+</script>
+<script type="text/babel" >
+
+    Vue.component('exchange-list', {
+        props: ['exchanges'],
+        template: `<table  class="exchange-list">
+        <tr class="exchange">
+            <th>Code</th>
+            <th>Name</th>
+        </tr>
+        <tr class="exchange" v-for="exchange in exchanges">
+            <td  class="exchange-code">
+                {{ exchange.code }}
+            </td>
+            <td class="exchange-name">
+                <a v-bind:href="exchange.website">{{ exchange.name }}</a>
+            </td>
+
+        </tr>
+       </table>`
+    });
+    Vue.component('commodity-list', {
+        props: ['commodities','exchanges'],
+        template: `<table  class="commodity-list">
+        <tr class="commodity">
+            <th>Code</th>
+            <th>Name</th>
+            <th>Margin</th>
+            <th>Exchange</th>
+        </tr>
+        <tr class="commodity" v-for="commodity in commodities">
+            <td  class="commodity-code">
+                {{ commodity.code }}
+            </td>
+            <td class="commodity-name">
+            {{commodity.name}}
+            </td>
+            <td >
+                {{commodity.minMargin}}%
+            </td>
+            <td>
+                 <a v-bind:href="getWeb(commodity.exchangeCode).website">{{ commodity.exchangeCode }}</a>
+            </td>
+
+        </tr>
+       </table>`
+        ,
+        methods:{
+            getWeb: function(code){
+               return  exchanges.find(
+                   function(ex,index,attr){return ex.code ==code;}
+                   )
+            }
+        }
+    });
+    var app = new Vue({
+        el: '#contents',
+        data:{
+            exchanges:exchanges,
+            commodities:commodities,
+            contracts:contracts
+        }
+    });
+</script>
+
+<script
+        src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js">
+</script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js">
+</script>
 </body>
 </html>
